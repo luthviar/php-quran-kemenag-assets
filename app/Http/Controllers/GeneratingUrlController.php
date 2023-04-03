@@ -64,7 +64,7 @@ class GeneratingUrlController extends Controller
             $fileName = "quran-surah-". $i .".json";
             if ($response->ok()) {
                 $data = $response->json();
-                $json = json_encode($data, JSON_PRETTY_PRINT);
+                $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
                 Storage::disk('local')->put($fileName, $json);
             }
 
@@ -72,5 +72,30 @@ class GeneratingUrlController extends Controller
         }        
 
         dd("success convert to json file");       
+    }
+
+    public function convertUnicodeToArabic() {     
+        set_time_limit(0);
+
+        $lastSurah = 114;
+        $firstSurah = 1;
+                
+        for ($i=$firstSurah; $i <= $lastSurah; $i++) {   
+            $path = storage_path("app/quran-surah-1.json");
+            $contents = file_get_contents($path);
+            $data = json_decode($contents, true);
+            $surahData = $data['data'];
+            $arabic = $surahData[0]['arabic'];
+        }
+        dd("success converted unicode");
+        $path = storage_path('app/quran-surah-1.json');
+        $contents = file_get_contents($path);
+        $data = json_decode($contents, true);
+        $surahData = $data['data'];
+        $arabic = $surahData[0]['arabic'];
+        dd($arabic);
+        $unicodeString = "\u0628\u0650\u0633\u0652\u0645\u0650 \u0627\u0644\u0644\u0651\u0670\u0647\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0652\u0645\u0670\u0646\u0650 \u0627\u0644\u0631\u0651\u064e\u062d\u0650\u064a\u0652\u0645\u0650";
+        $arabicString = json_decode('["'.$unicodeString.'"]')[0];
+        dd($arabicString); // Output: بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
     }
 }

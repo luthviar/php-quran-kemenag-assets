@@ -17,6 +17,7 @@ use App\Http\Controllers\GeneratingUrlController;
 
 Route::get('/url/run-url-to-image-file', [GeneratingUrlController::class, 'runUrlToImageFile']);
 Route::get('/url/run-url-to-json-file', [GeneratingUrlController::class, 'runUrlToJsonFile']);
+Route::get('/url/convert-to-arabic', [GeneratingUrlController::class, 'convertUnicodeToArabic']);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
